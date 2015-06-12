@@ -15,7 +15,7 @@ test('api usage', function t(assert) {
     });
 });
 
-test('lintText', function t(assert) {
+test('no-try-catch', function t(assert) {
     standard.lintText(
         '\'use strict\';\n' +
         'try {\n' +
@@ -33,6 +33,26 @@ test('lintText', function t(assert) {
         assert.equal(results.errorCount, 1);
         var messages = results.results[0].messages;
         assert.equal(messages[0].ruleId, 'no-try-catch');
+
+        assert.end();
+    }
+});
+
+test('no-function-bind', function t(assert) {
+    standard.lintText(
+        '\'use strict\';\n' +
+        'function foo() {}\n' +
+        '\n' +
+        'foo.bind({});\n',
+        onLint
+    );
+
+    function onLint(err, results) {
+        assert.ifError(err);
+
+        assert.equal(results.errorCount, 1);
+        var messages = results.results[0].messages;
+        assert.equal(messages[0].ruleId, 'no-function-bind');
 
         assert.end();
     }
